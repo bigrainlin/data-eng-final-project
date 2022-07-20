@@ -1,8 +1,4 @@
-_[Back to the repo index](https://github.com/ziritrion/dataeng-zoomcamp)_
-
 # Data Engineering Zoomcamp Project
-
-This folder contains my project for the [Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp) by [DataTalks.Club](https://datatalks.club).
 
 ## Index
 - [Data Engineering Zoomcamp Project](#data-engineering-zoomcamp-project)
@@ -37,29 +33,24 @@ This folder contains my project for the [Data Engineering Zoomcamp](https://gith
 
 # Problem
 
-This is a simple project which takes data from the GitHub Archive and transforms it in order to visualize the top GitHub contributors as well as the amount of commits per day.
+This is a simple project which takes data about Covid-19 cases from Google public datasets and transforms it in order to visualize the trending by country.
 
 # Dataset
 
-The chosen dataset for this project is the [GitHub Archive](https://www.gharchive.org/). The dataset contains every single public event made by GitHub users, from basic repo activity such as commits, forks and pull requests to comments, actions and all other events.
+This dataset contains country-level datasets of daily time-series data related to COVID-19 globally. You can find the list of sources available here: https://github.com/GoogleCloudPlatform/covid-19-open-data 
 
 # Dashboard
 
-You may access the dashboard with the visualizations [in this link](https://datastudio.google.com/reporting/fe0713dd-c5f1-4e26-b8e1-ca2a64cec745).
+You may access the dashboard with the visualizations [in this link](https://datastudio.google.com/reporting/6deba029-669c-4df0-ae15-625bfd3379b5/page/2pExC).
 
 # Project details and implementation
 
 This project makes use of Google Cloud Platform, particularly Cloud Storage and BigQuery.
 
-Cloud infrastructure is mostly managed with Terraform, except for Airflow and dbt instances (detailed below in the _Reproduce the project_ section).
+Cloud infrastructure is mostly managed with Terraform.
+Data ingestion is carried out by an Airflow DAG. The DAG downloads new data monthly and ingests it to a Cloud Storage bucket which behaves as the Data Lake for the project. The dataset is in CSV format. The DAG also creates an external table in BigQuery for querying the parquet files.
 
-Data ingestion is carried out by an Airflow DAG. The DAG downloads new data hourly and ingests it to a Cloud Storage bucket which behaves as the Data Lake for the project. The dataset is in JSON format; the DAG transforms it in order to get rid of any payload objects and parquetizes the data before uploading it. The DAG also creates an external table in BigQuery for querying the parquet files.
-
-The Data Warehouse is defined with dbt. It creates a table with all the info in the parquet files. The table is partitioned by day and clustered on actor ID's.
-
-dbt is also used for creating the transformations needed for the visualizations. A view is created in a staging phase containing only the _PushEvents_ (a Push Event contains one or more commits), and a final table containing the commit count per user is materialized in the deployment phase.
-
-The visualization dashboard is a simple Google Data Studio report with 2 widgets.
+The visualization dashboard is a simple Google Data Studio report with 3 widgets.
 
 # Reproduce the project
 
@@ -135,18 +126,10 @@ Create an environment variable called `GOOGLE_APPLICATION_CREDENTIALS` and assig
     * Change the boot disk to _Ubuntu_. The _Ubuntu 20.04 LTS_ version is recommended. Also pick at least 30GB of storage.
     * Leave all other settings on their default value and click on _Create_.
 
-### Using the SDK
-
-The following command will create a VM using the recommended settings from above. Make sure that the region matches your choice:
-
-```sh
-gcloud compute instances create <name-of-the-vm> --zone=<google-cloud-zone> --image-family=ubuntu-2004-lts --image-project=ubuntu-os-cloud --machine-type=e2-standard-4 --boot-disk-size=30GB
-```
-
 ## Set up SSH access to the VM
 
 1. Start your instance from the _VM instances_ dashboard in Google Cloud.
-1. In your local terminal, make sure that the gcloud SDK is configured for your project. Use `gcloud config list` to list your current config's details.
+2. In your local terminal, make sure that the gcloud SDK is configured for your project. Use `gcloud config list` to list your current config's details.
     1. If you have multiple google accounts but the current config does not match the account you want:
         1. Use `gcloud config configurations list` to see all of the available configs and their associated accounts.
         1. Change to the config you want with `gcloud config configurations activate my-project`
