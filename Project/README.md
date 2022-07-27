@@ -260,7 +260,7 @@ After the data ingestion, you may shut down Airflow by pressing `Ctrl+C` on the 
 
 ## Creating a dashboard
 
-The dashboard used in this project was generated with [Google Data Studio](https://datastudio.google.com/) (GDS from now on). Dashboards in GDS are called _reports_. Reports grab data from _data sources_.
+The dashboard used in this project was generated with [Google Data Studio]https://datastudio.google.com/reporting/6deba029-669c-4df0-ae15-625bfd3379b5/page/2pExC) (GDS from now on). Dashboards in GDS are called _reports_. Reports grab data from _data sources_.
 
 1. Generate the data sources.
     1. Click on the _Create_ button and choose _Data source_.
