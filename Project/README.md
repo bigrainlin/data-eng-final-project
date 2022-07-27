@@ -276,6 +276,4 @@ The dashboard used in this project was generated with [Google Data Studio](https
 1. Add another filter widget and select _location_key_ in `control field`
 1. Add the _Google Map_, _table_, and _time_series_ widgets, then select indices you would like to show in each widget.
 
-You should now have a functioning dashboard.
-
-_[Back to the repo index](https://github.com/bigrainlin/data-eng-final-project)_
+![ScreenShot](https://github.com/bigrainlin/data-eng-final-project/blob/main/Project/Data_Studio_Dashboard.PNG)
